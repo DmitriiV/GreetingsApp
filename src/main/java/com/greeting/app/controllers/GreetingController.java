@@ -11,7 +11,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.util.Optional;
 
@@ -29,10 +28,9 @@ public class GreetingController {
     @GetMapping("greet")
     public ResponseEntity<Greeting> greet(@RequestParam final Optional<String> name) {
         try {
-            throw new RuntimeException("HAHAHA");
-//            final var whom = taskExecutor.submit(() -> greetingsService.whom(name));
-//            final var when = taskExecutor.submit(() -> timeService.when());
-//            return new ResponseEntity<>(new Greeting(whom.get(), when.get()), HttpStatus.OK);
+            final var whom = taskExecutor.submit(() -> greetingsService.whom(name));
+            final var when = taskExecutor.submit(() -> timeService.when());
+            return new ResponseEntity<>(new Greeting(whom.get(), when.get()), HttpStatus.OK);
         } catch (Exception e) {
             throw new GreetingException();
         }
